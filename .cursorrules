@@ -1,0 +1,47 @@
+# 小智ESP32项目开发规则导航
+
+> 这个文件提供了项目所有规则文件的导航索引。根据您正在处理的组件，请参考相应的规则文件。
+
+## 项目进度
+
+要跟踪开发计划进度，请参考：
+- [progress-tracker.md](./progress-tracker.md) - 基于development-plan.md的任务进度追踪器
+
+## 组件特定规则
+
+根据您当前正在处理的组件，参考以下规则文件：
+
+1. **Java后端开发**
+   - [rules-manager-api.md](./rules-manager-api.md) - Manager API (Java/Spring Boot)开发规则
+
+2. **Python服务器开发**
+   - [rules-xiaozhi-server.md](./rules-xiaozhi-server.md) - Xiaozhi Server (Python/FastAPI)开发规则
+
+3. **前端开发**
+   - [rules-manager-web.md](./rules-manager-web.md) - Manager Web (Vue)开发规则
+
+## 通用核心规则
+
+无论处理哪个组件，都应遵循以下核心规则：
+
+### 代码架构
+- 遵循SOLID原则和设计模式
+- 避免代码重复，遵循DRY原则
+- 保持函数和类小而专一
+- 使用描述性命名和清晰文档
+
+### 安全原则
+- 不在版本控制中提交密钥、凭证
+- 避免记录敏感数据，使用占位符
+- 定期更新依赖，使用安全扫描工具
+- 验证和清理所有用户输入
+
+### 学习与经验分享
+- 遇到问题及解决方案记录在[learning-journal.md](./learning-journal.md)
+- 定期讨论并更新最佳实践
+
+## 项目文档
+
+要了解项目架构和组件，请参考：
+- [README.md](./main/README.md) - 项目总体介绍
+- [development-plan.md](./development-plan.md) - 设备认证系统开发计划
