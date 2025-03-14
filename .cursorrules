@@ -1,5 +1,8 @@
 # 小智ESP32项目开发规则导航
 
+## 開發環境
+在本地windows環境開發
+
 > 这个文件提供了项目所有规则文件的导航索引。根据您正在处理的组件，请参考相应的规则文件。
 
 ## 项目进度
@@ -37,7 +40,11 @@
 - 验证和清理所有用户输入
 
 ### 学习与经验分享
-- 遇到问题及解决方案记录在[learning-journal.md](./learning-journal.md)
+- 遇到问题及解决方案记录在[learning](./learning/README.md)目录中：
+  - [通用学习记录](./learning/general-learning.md) - 跨项目的通用问题
+  - [Manager API 学习记录](./learning/manager-api/learning-journal.md) - Java后端相关
+  - [Manager Web 学习记录](./learning/manager-web/learning-journal.md) - 前端相关
+  - [Xiaozhi Server 学习记录](./learning/xiaozhi-server/learning-journal.md) - Python服务器相关
 - 定期讨论并更新最佳实践
 
 ## 项目文档

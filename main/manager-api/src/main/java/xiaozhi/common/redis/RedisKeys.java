@@ -77,4 +77,25 @@ public class RedisKeys {
         return "sys:user:name" + id;
     }
 
+    /**
+     * 激活码详情Key
+     */
+    public static String getActivationCodeKey(String code) {
+        return "activation:code:" + code;
+    }
+
+    /**
+     * 设备当前活跃令牌Key
+     */
+    public static String getDeviceActiveTokenKey(Long deviceId) {
+        return "token:active:" + deviceId;
+    }
+
+    /**
+     * 已撤销令牌集合Key
+     */
+    public static String getRevokedTokensKey() {
+        return "token:revoked";
+    }
+
 }
