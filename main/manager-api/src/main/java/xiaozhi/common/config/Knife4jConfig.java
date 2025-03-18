@@ -7,15 +7,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 /**
- * Knife4j specific configuration - DISABLED for troubleshooting
+ * Knife4j specific configuration
  */
-// @Configuration // Disabled for troubleshooting
+@Configuration
 public class Knife4jConfig {
     
     /**
      * Resolve CORS issues
      */
-    // @Bean // Disabled for troubleshooting
+    @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();

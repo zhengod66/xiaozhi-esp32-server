@@ -10,17 +10,17 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 /**
- * Swagger Configuration - DISABLED for troubleshooting
+ * Swagger Configuration
  * Note: Group names must be in English to avoid URL encoding issues
  */
-// @Configuration  // Disabled for troubleshooting
+@Configuration
 public class SwaggerConfig {
     
     /**
      * Device Management API Group
      * Note: 'group' must be in English (e.g. "device"), 'displayName' can be changed later
      */
-    // @Bean  // Disabled for troubleshooting
+    @Bean
     public GroupedOpenApi deviceApi() {
         return GroupedOpenApi.builder()
                 .group("device")
@@ -33,7 +33,7 @@ public class SwaggerConfig {
      * System Management API Group
      * Note: 'group' must be in English (e.g. "system"), 'displayName' can be changed later
      */
-    // @Bean  // Disabled for troubleshooting
+    @Bean
     public GroupedOpenApi systemApi() {
         return GroupedOpenApi.builder()
                 .group("system")
@@ -48,7 +48,7 @@ public class SwaggerConfig {
      * 
      * Note: No security scheme configuration to ensure documentation is accessible without authentication
      */
-    // @Bean  // Disabled for troubleshooting
+    @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
             .info(new Info()

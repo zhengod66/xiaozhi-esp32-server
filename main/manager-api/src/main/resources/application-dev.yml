@@ -1,16 +1,20 @@
-# API Documentation disabled for troubleshooting
+# API Documentation configuration
 knife4j:
-  enable: false
-  production: true
+  enable: true
+  production: false
   basic:
     enable: false
 
-# SpringDoc disabled for troubleshooting
+# SpringDoc configuration
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
+    resolve-schema-properties: true
   swagger-ui:
-    enabled: false
+    enabled: true
+  model-converters:
+    pageable-converter:
+      enabled: true
 
 # Disable chunked transfer encoding, use fixed Content-Length
 server:
@@ -24,18 +28,36 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+      force-response: true
   tomcat:
     max-http-form-post-size: 2MB
     max-swallow-size: 2MB
     use-fixed-length-response: true
     uri-encoding: UTF-8
+    relaxed-query-chars: ['[',']','{','}']
+    relaxed-path-chars: ['[',']','{','}']
   port: 8002
 
 spring:
   http:
     encoding:
       force: true
+      force-response: true
       charset: UTF-8
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+    contentnegotiation:
+      favor-parameter: false
+      favor-path-extension: false
+  jackson:
+    serialization:
+      indent-output: false
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null
+    time-zone: "Asia/Shanghai"
       
   liquibase:
     enabled: true

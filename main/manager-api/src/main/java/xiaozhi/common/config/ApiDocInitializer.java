@@ -9,10 +9,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * API Documentation Initializer - DISABLED for troubleshooting
+ * API Documentation Initializer
  * Ensures API documentation and Swagger-related configurations are correctly loaded at startup
  */
-// @Component // Disabled for troubleshooting
+@Component
 public class ApiDocInitializer implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(ApiDocInitializer.class);
@@ -31,8 +31,14 @@ public class ApiDocInitializer implements CommandLineRunner {
     
     @Override
     public void run(String... args) throws Exception {
-        log.info("API documentation initialization disabled for troubleshooting");
+        log.info("API documentation initialized at http://localhost:{}{}{}",
+                 serverPort, contextPath, "/doc.html");
         
-        // No initialization for now - disabled for troubleshooting
+        // Update OpenAPI title with context path for better clarity
+        if (openAPI != null && openAPI.getInfo() != null) {
+            Info info = openAPI.getInfo();
+            info.setTitle("XiaoZhi ESP32 API");
+            info.setDescription("Device Management System API Documentation - Context Path: " + contextPath);
+        }
     }
 } 

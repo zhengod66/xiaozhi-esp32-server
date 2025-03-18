@@ -10,46 +10,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Swagger Documentation Helper Controller - DISABLED for troubleshooting
+ * Swagger Documentation Helper Controller
  */
-// @Controller // Disabled for troubleshooting
+@Controller
 @RequestMapping("/api-doc")
 public class SwaggerHelper {
 
     /**
-     * Redirect to Swagger UI - DISABLED
+     * Redirect to Swagger UI
      */
     @GetMapping(value = {"", "/"})
     public String index() {
-        return "API documentation is disabled for troubleshooting";
+        return "redirect:/swagger-ui/index.html";
     }
 
     /**
-     * Redirect to Knife4j UI - DISABLED
+     * Redirect to Knife4j UI
      */
     @GetMapping("/knife4j")
     public String knife4j() {
-        return "API documentation is disabled for troubleshooting";
+        return "redirect:/doc.html";
     }
 
     /**
-     * Redirect to API specification - DISABLED
+     * Redirect to API specification
      */
     @GetMapping("/json")
     public String apiDocs() {
-        return "API documentation is disabled for troubleshooting";
+        return "redirect:/v3/api-docs";
     }
 
     /**
-     * Redirect to API groups page - DISABLED
+     * Redirect to API groups page
      */
     @GetMapping("/group")
     public String group() {
-        return "API documentation is disabled for troubleshooting";
+        return "redirect:/swagger-ui/index.html";
     }
     
     /**
-     * Provide minimal valid OpenAPI JSON - DISABLED
+     * Provide minimal valid OpenAPI JSON
      */
     @GetMapping(value = "/test-json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -57,8 +57,8 @@ public class SwaggerHelper {
         Map<String, Object> doc = new HashMap<>();
         doc.put("openapi", "3.0.1");
         doc.put("info", Map.of(
-                "title", "API Disabled",
-                "description", "API documentation is disabled for troubleshooting",
+                "title", "XiaoZhi ESP32 API",
+                "description", "API documentation test endpoint",
                 "version", "1.0.0"
         ));
         doc.put("paths", new HashMap<>());

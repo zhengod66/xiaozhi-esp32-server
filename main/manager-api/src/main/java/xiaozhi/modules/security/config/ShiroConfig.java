@@ -53,7 +53,7 @@ public class ShiroConfig {
         shiroFilter.setSecurityManager(securityManager);
         shiroFilter.setShiroFilterConfiguration(config);
 
-        //oauth过滤
+        //oauth過濾
         Map<String, Filter> filters = new HashMap<>();
         filters.put("oauth2", new Oauth2Filter());
         shiroFilter.setFilters(filters);
@@ -65,8 +65,10 @@ public class ShiroConfig {
         filterMap.put("/publicKey", "anon");
         filterMap.put("/health", "anon");
         
-        // Swagger和API文檔相關路徑 - 臨時禁用，進行故障排查
-        /*
+        // API文檔調試相關路徑 - 添加調試端點
+        filterMap.put("/api/debug/**", "anon");  // 添加我們的調試端點
+        
+        // Swagger和API文檔相關路徑
         filterMap.put("/v3/api-docs", "anon");
         filterMap.put("/v3/api-docs/**", "anon");
         filterMap.put("/swagger-config", "anon");
@@ -88,7 +90,6 @@ public class ShiroConfig {
         filterMap.put("/v2/api-docs/**", "anon");
         filterMap.put("/csrf", "anon");
         filterMap.put("/favicon.ico", "anon");
-        */
         
         filterMap.put("/sys/oss/download/**", "anon");
         filterMap.put("/captcha", "anon");

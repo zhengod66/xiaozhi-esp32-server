@@ -24,9 +24,9 @@ import java.util.regex.Pattern;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Knife4j specific configuration support - DISABLED for troubleshooting
+ * Knife4j specific configuration support
  */
-// @Configuration // Disabled for troubleshooting
+@Configuration
 public class Knife4jConfigSupport implements WebMvcConfigurer {
     private static final Logger log = LoggerFactory.getLogger(Knife4jConfigSupport.class);
     
@@ -38,14 +38,24 @@ public class Knife4jConfigSupport implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // All resource handlers disabled for troubleshooting
-        log.info("Knife4j resource handlers disabled for troubleshooting");
+        log.info("Adding Knife4j resource handlers");
+        
+        // Add resources for Knife4j
+        registry.addResourceHandler("doc.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+        
+        // Optional: Add additional resources if needed
+        registry.addResourceHandler("/swagger-resources/**")
+                .addResourceLocations("classpath:/META-INF/resources/swagger-resources/");
     }
     
     /**
-     * Knife4j request filter - DISABLED for troubleshooting
+     * Knife4j request filter
      */
-    // @Component // Disabled for troubleshooting
+    @Component
     public static class Knife4jFilter extends OncePerRequestFilter {
         
         private static final Logger log = LoggerFactory.getLogger(Knife4jFilter.class);
@@ -56,14 +66,28 @@ public class Knife4jConfigSupport implements WebMvcConfigurer {
         
         @Override
         protected boolean shouldNotFilter(HttpServletRequest request) {
-            // Always return true - disabled for troubleshooting
-            return true;
+            String path = request.getRequestURI();
+            boolean isApiDocsRequest = path.contains("/v3/api-docs") || path.contains("/swagger-ui") || 
+                                       path.contains("/doc.html") || path.contains("/knife4j");
+            
+            return !isApiDocsRequest; // Only filter API docs requests
         }
         
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) 
                 throws ServletException, IOException {
-            // Simple pass-through implementation
+            String path = request.getRequestURI();
+            
+            // Handle API docs group requests
+            if (API_DOCS_GROUP_PATTERN.matcher(path).matches()) {
+                log.debug("Processing API docs group request: {}", path);
+                
+                // Just enhance the response headers
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            }
+            
+            // Continue the filter chain
             filterChain.doFilter(request, response);
         }
     }
