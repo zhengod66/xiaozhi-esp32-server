@@ -63,12 +63,46 @@ public class ShiroConfig {
         filterMap.put("/druid/**", "anon");
         filterMap.put("/login", "anon");
         filterMap.put("/publicKey", "anon");
+        filterMap.put("/health", "anon");
+        
+        // Swagger和API文檔相關路徑 - 臨時禁用，進行故障排查
+        /*
+        filterMap.put("/v3/api-docs", "anon");
         filterMap.put("/v3/api-docs/**", "anon");
+        filterMap.put("/swagger-config", "anon");
+        filterMap.put("/swagger-ui.html", "anon");
+        filterMap.put("/swagger-ui/**", "anon");
+        filterMap.put("/swagger-resources", "anon");
+        filterMap.put("/swagger-resources/**", "anon");
         filterMap.put("/doc.html", "anon");
+        filterMap.put("/doc.html/**", "anon");
+        filterMap.put("/webjars/**", "anon");
+        filterMap.put("/knife4j/**", "anon");
+        filterMap.put("/api-doc", "anon");
+        filterMap.put("/api-doc/**", "anon");
+        
+        // 額外添加可能被遺漏的路徑
+        filterMap.put("/configuration/ui", "anon");
+        filterMap.put("/configuration/security", "anon");
+        filterMap.put("/v2/api-docs", "anon");
+        filterMap.put("/v2/api-docs/**", "anon");
+        filterMap.put("/csrf", "anon");
+        filterMap.put("/favicon.ico", "anon");
+        */
+        
         filterMap.put("/sys/oss/download/**", "anon");
         filterMap.put("/captcha", "anon");
-        filterMap.put("/favicon.ico", "anon");
         filterMap.put("/mobile/**", "anon");
+        
+        // 允許設備管理相關公共接口
+        filterMap.put("/admin/token/clean", "anon"); // 允許手動清理令牌接口
+        filterMap.put("/xiaozhi/ota", "anon"); // 允許OTA接口公開訪問
+        filterMap.put("/xiaozhi/ota/**", "anon"); // 允許OTA相關接口
+        filterMap.put("/ota/**", "anon"); // 允許OTA相關接口
+        
+        // 允許用戶註冊公開訪問
+        filterMap.put("/sys/user/register", "anon");
+        
         filterMap.put("/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 

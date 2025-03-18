@@ -153,4 +153,47 @@ public class SysUserController {
 
         return new Result();
     }
+
+    /**
+     * 用戶公開註冊接口
+     * 此接口無需認證即可訪問
+     */
+    @PostMapping("register")
+    @Operation(summary = "用戶註冊")
+    @LogOperation("用戶註冊")
+    public Result register(@RequestBody SysUserDTO dto) {
+        // 基本參數驗證
+        ValidatorUtils.validateEntity(dto, AddGroup.class);
+        
+        if(dto.getUsername() == null || dto.getUsername().trim().isEmpty()) {
+            return new Result().error("用戶名不能為空");
+        }
+        
+        if(dto.getPassword() == null || dto.getPassword().trim().isEmpty()) {
+            return new Result().error("密碼不能為空");
+        }
+        
+        // 檢查用戶名是否已存在
+        SysUserDTO existUser = sysUserService.getByUsername(dto.getUsername());
+        if(existUser != null) {
+            return new Result().error("用戶名已存在");
+        }
+        
+        // 密碼強度檢查
+        if(!sysUserService.isStrongPassword(dto.getPassword())) {
+            return new Result().error("密碼強度不夠，請包含字母和數字且長度至少為6位");
+        }
+        
+        // 設置默認值
+        dto.setSuperAdmin(0); // 非超級管理員
+        dto.setStatus(1);     // 狀態為正常
+        
+        // 保存用戶
+        try {
+            sysUserService.save(dto);
+            return new Result();
+        } catch (Exception e) {
+            return new Result().error("註冊失敗：" + e.getMessage());
+        }
+    }
 }

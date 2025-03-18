@@ -1,16 +1,46 @@
+# API Documentation disabled for troubleshooting
 knife4j:
-  production: false
-  enable: true
+  enable: false
+  production: true
   basic:
     enable: false
-    username: renren
-    password: 2ZABCDEUgF
-  setting:
-    enableFooter: false
-jasypt:
-  encryptor:
-    password: P9Hx718z8L
+
+# SpringDoc disabled for troubleshooting
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+# Disable chunked transfer encoding, use fixed Content-Length
+server:
+  compression:
+    enabled: false
+  http2:
+    enabled: false
+  servlet:
+    context-path: /xiaozhi-esp32-api
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  tomcat:
+    max-http-form-post-size: 2MB
+    max-swallow-size: 2MB
+    use-fixed-length-response: true
+    uri-encoding: UTF-8
+  port: 8002
+
 spring:
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      
+  liquibase:
+    enabled: true
+    drop-first: false
+    change-log: classpath:db/changelog/db.changelog-master.yaml
   datasource:
     druid:
       #MySQL
@@ -42,3 +72,6 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+jasypt:
+  encryptor:
+    password: P9Hx718z8L

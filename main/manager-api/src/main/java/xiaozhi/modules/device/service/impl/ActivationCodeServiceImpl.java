@@ -56,6 +56,7 @@ public class ActivationCodeServiceImpl extends CrudServiceImpl<ActivationCodeDao
         entity.setDeviceId(deviceId);
         entity.setStatus(DeviceConstant.ActivationStatus.VALID);
         entity.setExpireTime(expireTime);
+        entity.setCreateDate(new Date());
 
         // 保存到数据库
         baseDao.insert(entity);
@@ -184,6 +185,38 @@ public class ActivationCodeServiceImpl extends CrudServiceImpl<ActivationCodeDao
         return wrapper;
     }
 
+    /**
+     * 獲取設備的有效激活碼
+     * 如果有多個有效激活碼，返回過期時間最晚的一個
+     *
+     * @param deviceId 設備ID
+     * @return 有效激活碼，如果沒有則返回null
+     */
+    @Override
+    public ActivationCodeDTO getValidCodeByDeviceId(Long deviceId) {
+        if (deviceId == null) {
+            return null;
+        }
+        
+        Date now = new Date();
+        
+        // 查詢該設備有效且未過期的激活碼，按過期時間降序排序
+        List<ActivationCodeEntity> codes = baseDao.selectList(
+                new LambdaQueryWrapper<ActivationCodeEntity>()
+                        .eq(ActivationCodeEntity::getDeviceId, deviceId)
+                        .eq(ActivationCodeEntity::getStatus, DeviceConstant.ActivationStatus.VALID)
+                        .gt(ActivationCodeEntity::getExpireTime, now)
+                        .orderByDesc(ActivationCodeEntity::getExpireTime)
+                        .last("LIMIT 1")
+        );
+        
+        if (codes.isEmpty()) {
+            return null;
+        }
+        
+        return convertEntity(codes.get(0));
+    }
+
     // ========== 辅助方法 ==========
 
     /**
@@ -259,7 +292,15 @@ public class ActivationCodeServiceImpl extends CrudServiceImpl<ActivationCodeDao
         map.put("deviceId", entity.getDeviceId());
         map.put("status", entity.getStatus());
         map.put("expireTime", entity.getExpireTime().getTime());
-        map.put("createDate", entity.getCreateDate().getTime());
+        
+        // 添加createDate为null的检查
+        if (entity.getCreateDate() != null) {
+            map.put("createDate", entity.getCreateDate().getTime());
+        } else {
+            Date now = new Date();
+            entity.setCreateDate(now);
+            map.put("createDate", now.getTime());
+        }
 
         // 保存到Redis，设置过期时间
         redisUtils.hMSet(key, map);

@@ -123,4 +123,25 @@ public class RedisUtils {
     public Object rightPop(String key) {
         return redisTemplate.opsForList().rightPop(key);
     }
+
+    /**
+     * 判断集合中是否存在某个元素
+     * @param key 键
+     * @param value 值
+     * @return 是否存在
+     */
+    public boolean sIsMember(String key, Object value) {
+        return Boolean.TRUE.equals(redisTemplate.opsForSet().isMember(key, value));
+    }
+    
+    /**
+     * 添加元素到集合
+     * @param key 键
+     * @param values 值
+     * @return 添加的元素数量
+     */
+    public long sAdd(String key, Object... values) {
+        Long count = redisTemplate.opsForSet().add(key, values);
+        return count == null ? 0 : count;
+    }
 }

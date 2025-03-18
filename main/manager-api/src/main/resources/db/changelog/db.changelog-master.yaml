@@ -16,3 +16,10 @@ databaseChangeLog:
         - sqlFile:
             encoding: utf8
             path: classpath:db/changelog/002create_device_tables.sql
+  - changeSet:
+      id: 003init_test_data
+      author: xiaozhi
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: classpath:db/changelog/003init_test_data.sql

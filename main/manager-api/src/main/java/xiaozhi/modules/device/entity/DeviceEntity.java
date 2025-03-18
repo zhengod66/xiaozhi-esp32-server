@@ -47,5 +47,5 @@ public class DeviceEntity extends BaseEntity {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private Date updateDate;
 } 

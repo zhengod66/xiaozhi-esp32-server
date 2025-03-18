@@ -23,4 +23,7 @@ public class TokenDTO implements Serializable {
 
     @Schema(description = "客户端指纹")
     private String clientHash;
+    
+    @Schema(description = "用户ID")
+    private Long userId;
 }

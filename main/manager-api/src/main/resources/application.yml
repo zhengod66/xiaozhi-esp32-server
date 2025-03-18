@@ -40,6 +40,31 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+# JWT配置
+jwt:
+  # JWT密鑰（生產環境請更換為強隨機密鑰）
+  secret: xiaozhi_esp32_jwt_secret_key_for_device_authentication_system
+  # 令牌過期時間，單位秒（默認7天）
+  expiration: 604800
+  # JWT令牌前綴
+  prefix: "Bearer "
+  # HTTP請求頭名稱
+  header: "Authorization"
+
+# 小智WebSocket服務器配置
+xiaozhi:
+  ws:
+    # WebSocket服務器地址
+    server: localhost
+    # WebSocket服務器端口
+    port: 8765
+    # WebSocket路徑
+    path: /ws
+    # OTA接口路徑
+    otaPath: /xiaozhi/ota
+    # 設備類型映射（預留功能）
+    enableDeviceTypeMapping: false
+
 knife4j:
   enable: true
   basic:

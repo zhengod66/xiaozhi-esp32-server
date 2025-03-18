@@ -67,6 +67,7 @@ public class SysUserTokenServiceImpl extends BaseServiceImpl<SysUserTokenDao, Sy
         tokenDTO.setToken(token);
         tokenDTO.setExpire(EXPIRE);
         tokenDTO.setClientHash(clientHash);
+        tokenDTO.setUserId(userId);
         return new Result().ok(tokenDTO);
     }
 

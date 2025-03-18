@@ -56,16 +56,35 @@ public class Oauth2Realm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String accessToken = (String) token.getPrincipal();
+        
+        System.out.println("=====================================");
+        System.out.println("Oauth2Realm.doGetAuthenticationInfo - 开始验证令牌: " + accessToken);
 
         //根据accessToken，查询用户信息
         SysUserTokenEntity tokenEntity = shiroService.getByToken(accessToken);
+        
+        if (tokenEntity == null) {
+            System.out.println("令牌验证失败: 令牌不存在于数据库中");
+            throw new IncorrectCredentialsException(MessageUtils.getMessage(ErrorCode.TOKEN_INVALID));
+        }
+        
+        System.out.println("数据库中找到令牌信息: userId=" + tokenEntity.getUserId() + ", 过期时间=" + tokenEntity.getExpireDate());
+        
         //token失效
-        if (tokenEntity == null || tokenEntity.getExpireDate().getTime() < System.currentTimeMillis()) {
+        if (tokenEntity.getExpireDate().getTime() < System.currentTimeMillis()) {
+            System.out.println("令牌验证失败: 令牌已过期，当前时间: " + System.currentTimeMillis() + ", 过期时间: " + tokenEntity.getExpireDate().getTime());
             throw new IncorrectCredentialsException(MessageUtils.getMessage(ErrorCode.TOKEN_INVALID));
         }
 
         //查询用户信息
         SysUserEntity userEntity = shiroService.getUser(tokenEntity.getUserId());
+        
+        if (userEntity == null) {
+            System.out.println("令牌验证失败: 找不到用户信息，userId: " + tokenEntity.getUserId());
+            throw new UnknownAccountException(MessageUtils.getMessage(ErrorCode.UNAUTHORIZED));
+        }
+        
+        System.out.println("找到用户信息: " + userEntity.getUsername() + ", 状态: " + userEntity.getStatus());
 
         //转换成UserDetail对象
         UserDetail userDetail = ConvertUtils.sourceToTarget(userEntity, UserDetail.class);
@@ -76,9 +95,13 @@ public class Oauth2Realm extends AuthorizingRealm {
 
         //账号锁定
         if (userDetail.getStatus() == 0) {
+            System.out.println("令牌验证失败: 账号已锁定");
             throw new LockedAccountException(MessageUtils.getMessage(ErrorCode.ACCOUNT_LOCK));
         }
 
+        System.out.println("令牌验证成功!");
+        System.out.println("=====================================");
+        
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(userDetail, accessToken, getName());
         return info;
     }

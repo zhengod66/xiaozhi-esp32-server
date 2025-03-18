@@ -77,7 +77,7 @@ public class DeviceServiceImpl extends CrudServiceImpl<DeviceDao, DeviceEntity, 
         DeviceEntity entity = new DeviceEntity();
         entity.setId(id);
         entity.setStatus(status);
-        entity.setUpdateTime(new Date());
+        entity.setUpdateDate(new Date());
 
         baseDao.updateById(entity);
     }
@@ -93,7 +93,7 @@ public class DeviceServiceImpl extends CrudServiceImpl<DeviceDao, DeviceEntity, 
         baseDao.update(null, new LambdaUpdateWrapper<DeviceEntity>()
                 .eq(DeviceEntity::getId, id)
                 .set(DeviceEntity::getUserId, userId)
-                .set(DeviceEntity::getUpdateTime, new Date()));
+                .set(DeviceEntity::getUpdateDate, new Date()));
     }
 
     @Override

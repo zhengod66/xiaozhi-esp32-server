@@ -7,8 +7,10 @@ CREATE TABLE t_device (
     type VARCHAR(50) COMMENT '设备类型',
     status TINYINT DEFAULT 0 COMMENT '设备状态：0-未激活 1-等待激活 2-已激活',
     user_id BIGINT COMMENT '关联用户ID',
-    create_time DATETIME COMMENT '创建时间',
-    update_time DATETIME COMMENT '更新时间',
+    creator BIGINT COMMENT '创建者',
+    create_date DATETIME COMMENT '创建时间',
+    updater BIGINT COMMENT '更新者',
+    update_date DATETIME COMMENT '更新时间',
     PRIMARY KEY (id),
     UNIQUE KEY uk_mac_address (mac_address),
     UNIQUE KEY uk_client_id (client_id)
@@ -21,7 +23,10 @@ CREATE TABLE t_activation_code (
     device_id BIGINT COMMENT '关联设备ID',
     status TINYINT DEFAULT 0 COMMENT '状态：0-有效 1-已使用 2-已过期',
     expire_time DATETIME COMMENT '过期时间',
-    create_time DATETIME COMMENT '创建时间',
+    creator BIGINT COMMENT '创建者',
+    create_date DATETIME COMMENT '创建时间',
+    updater BIGINT COMMENT '更新者',
+    update_date DATETIME COMMENT '更新时间',
     PRIMARY KEY (id),
     UNIQUE KEY uk_code (code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='激活码表';
@@ -33,7 +38,10 @@ CREATE TABLE t_access_token (
     token TEXT NOT NULL COMMENT 'JWT令牌',
     is_revoked TINYINT DEFAULT 0 COMMENT '是否已撤销：0-否 1-是',
     expire_time DATETIME COMMENT '过期时间',
-    create_time DATETIME COMMENT '创建时间',
+    creator BIGINT COMMENT '创建者',
+    create_date DATETIME COMMENT '创建时间',
+    updater BIGINT COMMENT '更新者',
+    update_date DATETIME COMMENT '更新时间',
     PRIMARY KEY (id),
     KEY idx_device_id (device_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='访问令牌表';

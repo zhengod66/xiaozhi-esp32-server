@@ -37,4 +37,12 @@ public interface ActivationCodeService extends CrudService<ActivationCodeEntity,
      */
     void cleanExpiredCodes();
     
+    /**
+     * 獲取設備的有效激活碼
+     * 如果有多個有效激活碼，返回過期時間最晚的一個
+     * 
+     * @param deviceId 設備ID
+     * @return 有效激活碼，如果沒有則返回null
+     */
+    ActivationCodeDTO getValidCodeByDeviceId(Long deviceId);
 } 
