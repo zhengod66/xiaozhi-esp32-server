@@ -18,7 +18,9 @@ async def handleTextMessage(conn, message):
             await conn.websocket.send(message)
             return
         if msg_json["type"] == "hello":
+            logger.bind(tag=TAG).info(f"收到客户端hello消息：{msg_json}")
             await handleHelloMessage(conn)
+            logger.bind(tag=TAG).info(f"已回复客户端hello消息：{conn.welcome_msg}")
         elif msg_json["type"] == "abort":
             await handleAbortMessage(conn)
         elif msg_json["type"] == "listen":

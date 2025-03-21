@@ -151,3 +151,9 @@ main/manager-web/node_modules
 .private_config.yaml
 .env.development
 
+# 忽略共享配置文件（仅密钥文件）
+shared-config/jwt-secret.properties
+
+# 示例配置文件可以提交
+!shared-config/jwt-secret.properties.example
+

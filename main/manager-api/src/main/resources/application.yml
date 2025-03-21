@@ -57,7 +57,7 @@ xiaozhi:
     # WebSocket服務器地址
     server: localhost
     # WebSocket服務器端口
-    port: 8765
+    port: 8000
     # WebSocket路徑
     path: /ws
     # OTA接口路徑

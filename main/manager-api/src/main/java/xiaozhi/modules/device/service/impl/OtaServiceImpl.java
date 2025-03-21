@@ -26,6 +26,7 @@ import java.util.TimeZone;
 @AllArgsConstructor
 @Slf4j
 public class OtaServiceImpl implements OtaService {
+    private static final String ACTIVATION_CODE_INSTRUCTION = "Please enter this activation code in the web app";
 
     private final DeviceService deviceService;
     private final ActivationCodeService activationCodeService;
@@ -170,7 +171,7 @@ public class OtaServiceImpl implements OtaService {
         // 构建响应
         return OtaResponseDTO.withActivation(
             codeDTO.getCode(), 
-            "请在APP上输入此激活码"
+            ACTIVATION_CODE_INSTRUCTION
         );
     }
 
@@ -189,7 +190,7 @@ public class OtaServiceImpl implements OtaService {
         
         return OtaResponseDTO.withActivation(
             codeDTO.getCode(), 
-            "请在APP上输入此激活码"
+            ACTIVATION_CODE_INSTRUCTION
         );
     }
 
@@ -213,7 +214,7 @@ public class OtaServiceImpl implements OtaService {
         
         return OtaResponseDTO.withActivation(
             codeDTO.getCode(), 
-            "请在APP上输入此激活码"
+            ACTIVATION_CODE_INSTRUCTION
         );
     }
 

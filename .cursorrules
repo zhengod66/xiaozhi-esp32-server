@@ -1,7 +1,7 @@
 # 小智ESP32项目开发规则导航
 
 ## 開發環境
-在本地windows環境開發
+在本地windows環境開發，Windows PowerShell不支持使用&&來連接命令，讓改用分號
 
 > 这个文件提供了项目所有规则文件的导航索引。根据您正在处理的组件，请参考相应的规则文件。
 
@@ -39,16 +39,37 @@
 - 定期更新依赖，使用安全扫描工具
 - 验证和清理所有用户输入
 
+### 文档规范
+- **每次功能开发完成后必须更新相应组件的README.md文件**
+- 各组件文档相互独立，不要混合更新
+- Manager API的更新记录在`/main/manager-api/README.md`
+- Xiaozhi Server的更新记录在`/main/xiaozhi-server/README.md`
+- Manager Web的更新记录在`/main/manager-web/README.md`
+- 文档更新应包含：新增的类、接口、方法和配置说明
+- 确保文档与实际代码保持一致
+
+### 测试文档规范
+- **每次新增或修改测试时，必须更新测试知识索引**
+- 遵循[测试知识索引](./TEST-INDEX.md)中规定的文档格式
+- 所有测试问题和解决方案必须记录在相应模块的学习日志中
+- 测试问题记录必须包含：问题描述、症状、解决方案和预防措施
+- 测试相关的经验教训应在团队中分享并更新到文档中
+- 提交包含测试代码的变更时，在提交信息中引用相关的测试文档
+- 在运行测试前，先查阅测试知识索引了解可能遇到的问题
+
 ### 学习与经验分享
 - 遇到问题及解决方案记录在[learning](./learning/README.md)目录中：
-  - [通用学习记录](./learning/general-learning.md) - 跨项目的通用问题
-  - [Manager API 学习记录](./learning/manager-api/learning-journal.md) - Java后端相关
-  - [Manager Web 学习记录](./learning/manager-web/learning-journal.md) - 前端相关
-  - [Xiaozhi Server 学习记录](./learning/xiaozhi-server/learning-journal.md) - Python服务器相关
+  - [通用学习记录](./learning/general-learning.md) - 跨项目的通用问题和解决方案
+  - [Manager API 学习记录](./learning/manager-api/learning-journal.md) - Java后端相关问题和解决方案
+  - [Manager Web 学习记录](./learning/manager-web/learning-journal.md) - 前端相关问题和解决方案
+  - [Xiaozhi Server 学习记录](./learning/xiaozhi-server/learning-journal.md) - Python服务器相关问题和解决方案
+- 学习记录应包含问题描述、症状、解决方案和预防措施
 - 定期讨论并更新最佳实践
 
 ## 项目文档
 
 要了解项目架构和组件，请参考：
 - [README.md](./main/README.md) - 项目总体介绍
+- [Manager API文档](./main/manager-api/README.md) - Manager API详细类和方法说明
 - [development-plan.md](./development-plan.md) - 设备认证系统开发计划
+- [TEST-INDEX.md](./TEST-INDEX.md) - 测试知识索引，统一收集测试相关资源和经验教训

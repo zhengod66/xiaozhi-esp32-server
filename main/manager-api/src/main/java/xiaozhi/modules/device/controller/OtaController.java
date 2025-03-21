@@ -41,37 +41,31 @@ public class OtaController {
      * 5. 需要固件更新：返回固件信息
      *
      * @param request OTA请求DTO
-     * @return OTA响应的JSON字符串
+     * @return OTA响应对象
      */
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     @Operation(summary = "设备OTA请求")
     @LogOperation("设备OTA请求")
-    public String handleOtaRequest(@RequestBody OtaRequestDTO request) {
+    public OtaResponseDTO handleOtaRequest(@RequestBody OtaRequestDTO request) {
         log.info("接收到OTA请求: {}", request);
         
         try {
             // 调用服务处理OTA请求
-            OtaResponseDTO response = otaService.processOtaRequest(request);
-            return objectMapper.writeValueAsString(response);
+            return otaService.processOtaRequest(request);
         } catch (Exception e) {
             log.error("处理OTA请求时发生错误", e);
             // 返回空响应
-            try {
-                OtaResponseDTO emptyResponse = new OtaResponseDTO();
-                // 确保即使发生错误，仍然添加服务器时间和空的固件信息
-                emptyResponse.addServerTime(System.currentTimeMillis(), 
-                        java.util.TimeZone.getDefault().getRawOffset() / (60 * 1000));
-                
-                // 添加空的固件信息
-                String currentVersion = request != null && request.getFirmwareVersion() != null 
-                        ? request.getFirmwareVersion() : "unknown";
-                emptyResponse.addFirmware(currentVersion, "");
-                
-                return objectMapper.writeValueAsString(emptyResponse);
-            } catch (Exception ex) {
-                log.error("创建错误响应失败", ex);
-                return "{}"; // 返回空JSON对象
-            }
+            OtaResponseDTO emptyResponse = new OtaResponseDTO();
+            // 确保即使发生错误，仍然添加服务器时间和空的固件信息
+            emptyResponse.addServerTime(System.currentTimeMillis(), 
+                    java.util.TimeZone.getDefault().getRawOffset() / (60 * 1000));
+            
+            // 添加空的固件信息
+            String currentVersion = request != null && request.getFirmwareVersion() != null 
+                    ? request.getFirmwareVersion() : "unknown";
+            emptyResponse.addFirmware(currentVersion, "");
+            
+            return emptyResponse;
         }
     }
 } 

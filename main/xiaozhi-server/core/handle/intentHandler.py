@@ -121,6 +121,11 @@ async def analyze_intent_with_llm(conn, text):
     if not hasattr(conn, 'intent') or not conn.intent:
         logger.bind(tag=TAG).warning("意图识别服务未初始化")
         return None
+        
+    # 检查LLM是否被禁用
+    if conn.config.get("disable_llm", False):
+        logger.bind(tag=TAG).warning("LLM已被禁用，跳过意图分析")
+        return None
 
     # 创建对话历史记录
     dialogue = conn.dialogue

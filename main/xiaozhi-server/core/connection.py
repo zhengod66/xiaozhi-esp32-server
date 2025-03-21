@@ -143,8 +143,25 @@ class ConnectionHandler:
             self.websocket = ws
             self.session_id = str(uuid.uuid4())
 
-            self.welcome_msg = self.config["xiaozhi"]
-            self.welcome_msg["session_id"] = self.session_id
+            # 获取并准备欢迎消息
+            # 注意：根据ESP32客户端的要求，消息类型必须是"hello"而不是"welcome"
+            self.welcome_msg = {
+                "type": "hello",
+                "transport": "websocket",
+                "audio_params": {
+                    "sample_rate": 16000,
+                    "format": "opus",
+                    "channels": 1
+                },
+                "session_id": self.session_id
+            }
+            
+            # 如果test_config中有message字段，也保留它以保持兼容性
+            if "message" in self.config.get("xiaozhi", {}):
+                self.welcome_msg["message"] = self.config["xiaozhi"]["message"]
+                
+            # 发送欢迎消息
+            self.logger.bind(tag=TAG).info(f"发送欢迎消息: {self.welcome_msg}")
             await self.websocket.send(json.dumps(self.welcome_msg))
 
             await self.loop.run_in_executor(None, self._initialize_components)
@@ -184,13 +201,19 @@ class ConnectionHandler:
             await handleAudioMessage(self, message)
 
     def _initialize_components(self):
-        self.prompt = self.config["prompt"]
+        """初始化组件"""
+        # 获取系统提示，如果不存在则使用默认值
+        self.prompt = self.config.get("prompt", "你是小智，一个智能语音助手。")
+        
         if self.private_config:
             self.prompt = self.private_config.private_config.get("prompt", self.prompt)
+            
         # 赋予LLM时间观念
         if "{date_time}" in self.prompt:
             date_time = time.strftime("%Y-%m-%d %H:%M", time.localtime())
             self.prompt = self.prompt.replace("{date_time}", date_time)
+            
+        # 初始化对话
         self.dialogue.put(Message(role="system", content=self.prompt))
 
     async def _check_and_broadcast_auth_code(self):

@@ -52,6 +52,19 @@ async def startToChat(conn, text):
         conn.asr_server_receive = True
         return
     
+    # 检查LLM是否被禁用
+    if conn.config.get("disable_llm", False):
+        logger.bind(tag=TAG).warning("LLM已被禁用，无法处理聊天。发送默认回复。")
+        await send_stt_message(conn, text)
+        # 发送一个默认响应，表示系统无法处理聊天
+        default_response = "对不起，我当前无法处理您的请求。语言模型服务未启用。"
+        # 直接通过TTS功能播放默认响应
+        if hasattr(conn, 'speak_and_play') and callable(conn.speak_and_play):
+            future = conn.executor.submit(conn.speak_and_play, default_response)
+            conn.tts_queue.put(future)
+        conn.asr_server_receive = True
+        return
+    
     # 意图未被处理，继续常规聊天流程
     await send_stt_message(conn, text)
     if conn.use_function_call_mode:
@@ -70,5 +83,5 @@ async def no_voice_close_connect(conn):
         if no_voice_time > 1000 * close_connection_no_voice_time:
             conn.client_abort = False
             conn.asr_server_receive = False
-            prompt = "时间过得真快，我都好久没说话了。请你用十个字左右话跟我告别，以“再见”或“拜拜”为结尾"
+            prompt = "时间过得真快，我都好久没说话了。请你用十个字左右话跟我告别，以'再见'或'拜拜'为结尾"
             await startToChat(conn, prompt)
